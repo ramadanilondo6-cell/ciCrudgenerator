@@ -5,13 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title> CI GENERATOR </title>
-        <link href="<?php echo $this->config->item('accet_url') ?>css/plugins/select2/select2.min.css" rel="stylesheet">
-        <script src="<?php echo $this->config->item('accet_url') ?>js/jquery-2.1.1.min.js"></script>
-         <script src="<?php echo $this->config->item('accet_url') ?>js/plugins/slimscroll/jquery.slimscroll.min.js"></script> 
-        <script src="<?php echo $this->config->item('accet_url') ?>js/app.js"></script>
-        <script src="<?php echo $this->config->item('accet_url') ?>js/plugins/pace/pace.min.js"></script>
-        <link href="<?php echo $this->config->item('accet_url') ?>css/plugins/chosen/chosen.css" rel="stylesheet">
         <link href="<?php echo $this->config->item('accet_url') ?>css/bootstrap.min.css" rel="stylesheet">
+        <link href="<?php echo $this->config->item('accet_url') ?>css/plugins/dataTables/datatables.min.css" rel="stylesheet">
         <link href="<?php echo $this->config->item('accet_url') ?>font-awesome/css/font-awesome.css" rel="stylesheet">
         <!-- Toastr style -->
         <link href="<?php echo $this->config->item('accet_url') ?>css/plugins/toastr/toastr.min.css" rel="stylesheet">
@@ -19,12 +14,9 @@
         <link href="<?php echo $this->config->item('accet_url') ?>js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
         <link href="<?php echo $this->config->item('accet_url') ?>css/animate.css" rel="stylesheet">
         <link href="<?php echo $this->config->item('accet_url') ?>css/style.css" rel="stylesheet">
-        <link href="<?php echo $this->config->item('accet_url') ?>css/plugins/dataTables/datatables.min.css" rel="stylesheet">
         <!-- Date Picker-->
         <link href="<?php echo base_url() ?>accets/datepicker/datepicker.css" rel="stylesheet">
-        <script src="<?php echo base_url() ?>accets/datepicker/bootstrap-datepicker.js"></script>
         <link href="<?php echo $this->config->item('accet_url') ?>css/plugins/clockpicker/clockpicker.css" rel="stylesheet">
-        <script src="<?php echo $this->config->item('accet_url') ?>js/recordDel.js"></script>
         <link href="<?php echo $this->config->item('accet_url') ?>css/bootstrap-datetimepicker.css" rel="stylesheet">
     </head>
     <body>
@@ -151,7 +143,7 @@
 
                 <!-- BO : Modules -->
                 <li  <?php if ($contr == 'module') { ?>class="active "<?php } ?>  >
-                    <a href="<?php echo base_url() ?>admin/module/add"><i class="fa fa-users"></i><span class="title">Generate Module</span>
+                    <a href="<?php echo base_url() ?>admin/module"><i class="fa fa-users"></i><span class="title">Generate Module</span>
                         <?php if ($contr == 'module') { ?><span class="selected"></span><?php } ?>   
                         <span class="arrow <?php if ($contr == 'module') { ?>open<?php } ?>"></span>
                     </a>
