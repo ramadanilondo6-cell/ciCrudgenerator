@@ -129,38 +129,34 @@ class ==table==_model extends CI_Model
 
     
 
-public function uploadData(&@@@data, @@@file_name, @@@file_path, @@@postfix='', @@@allowedTypes)
+public function uploadData(&@@@data, @@@file_name, @@@file_path, @@@postfix = '', @@@allowedTypes)
 {
-   @@@config = NULL;
-   @@@config['upload_path'] = @@@this->config->item(@@@file_path);  
-   @@@config['allowed_types'] = @@@allowedTypes;
-   if (isset(@@@_FILES[@@@file_name]['name']) && !empty(@@@_FILES[@@@file_name]['name']))
-   {
-    @@@this->load->library('upload', @@@config);
-    @@@this->upload->initialize(@@@config);
-    @@@exts = explode(".",@@@_FILES[@@@file_name]['name']);
-    @@@_FILES[@@@file_name]['name'] = @@@exts[0].@@@postfix.".".end(@@@exts);
-    if ( ! @@@this->upload->do_upload(@@@file_name))
-    {
-     @@@data[@@@file_name.'_err'] = array('error' => @@@this->upload->display_errors());
+    @@@config = array(
+        'upload_path'   => @@@this->config->item(@@@file_path),
+        'allowed_types' => @@@allowedTypes,
+    );
+
+    if (isset(@@@_FILES[@@@file_name]['name']) && !empty(@@@_FILES[@@@file_name]['name'])) {
+        @@@this->load->library('upload', @@@config);
+        @@@this->upload->initialize(@@@config);
+
+        @@@exts = explode(".", @@@_FILES[@@@file_name]['name']);
+        @@@_FILES[@@@file_name]['name'] = @@@exts[0] . @@@postfix . "." . end(@@@exts);
+
+        if (!@@@this->upload->do_upload(@@@file_name)) {
+            @@@data[@@@file_name . '_err'] = array('error' => @@@this->upload->display_errors());
+        } else {
+            @@@uploadImg = @@@this->upload->data();
+            if (@@@uploadImg['file_name'] != '') {
+                if (isset(@@@_POST['old_' . @@@file_name]) && !empty(@@@_POST['old_' . @@@file_name])) {
+                    @unlink(@@@this->config->item(@@@file_path) . @@@_POST['old_' . @@@file_name]);
+                }
+                @@@data[@@@file_name] = @@@uploadImg['file_name'];
+            }
+        }
+    } elseif (isset(@@@_POST['old_' . @@@file_name]) && !empty(@@@_POST['old_' . @@@file_name])) {
+        @@@data[@@@file_name] = @@@_POST['old_' . @@@file_name];
     }
-    else
-    {
-     @@@uploadImg = @@@this->upload->data();
-     if(@@@uploadImg['file_name'] != '')
-    {
-     if (isset(@@@_POST['old_'.@@@file_name]) && !empty(@@@_POST['old_'.@@@file_name]))
-     {
-      @unlink(@@@this->config->item(@@@file_path).@@@_POST['old_'.@@@file_name]);
-     }
-     @@@data[@@@file_name] = @@@uploadImg['file_name'];
-    }
-   } 
-  }
-  elseif (isset(@@@_POST['old_'.@@@file_name]) && !empty(@@@_POST['old_'.@@@file_name]))
-  {
-   @@@data[@@@file_name] = @@@_POST['old_'.@@@file_name];
-  }   
 }
 
 }
