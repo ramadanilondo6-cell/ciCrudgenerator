@@ -54,5 +54,6 @@
         });
     });
 </script>
+<script src="<?php echo $this->config->item('accet_url') ?>js/manage.js"></script>
 </body>
 </html>

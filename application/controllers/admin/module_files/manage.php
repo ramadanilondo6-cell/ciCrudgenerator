@@ -42,7 +42,7 @@
                </div>
                <input type="submit" name="search" value="Search" class="btn btn-info">
                <div class="form-group pull-right">
-                  <select name="per_page" class="form-control" onchange="this.form.submit()">
+                  <select name="per_page" id="per_page_select" class="form-control">
                      <option value="5" <?php echo @@@per_page=="5"?'selected="selected"':""; ?>>5</option>
                      <option value="10" <?php echo @@@per_page=="10"?'selected="selected"':""; ?>>10</option>
                      <option value="20" <?php echo @@@per_page=="20"?'selected="selected"':""; ?>>20</option>
@@ -90,28 +90,12 @@
             <?php echo @@@links; ?>
          </div>
       </div>
-      <img onclick="callme('','item','')" src="<?php echo $this->config->item('accet_url')?>/img/mac-trashcan_full-new.png" id="recycle" style="width:90px;  display:none; position:fixed; bottom: 50px; right: 50px;"/>
+      <img src="<?php echo $this->config->item('accet_url')?>/img/mac-trashcan_full-new.png" id="recycle" class="recycle-bin" style="display:none;" />
    </div>
 </div>
 <script type="text/javascript">
-   function delRow()
-   {
-   var confrm = confirm("Are you sure you want to delete?");
-   if(confrm)
-   {
-   ids = values();
-   $.ajax({
-     type:"POST",
-     url:'<?php echo base_url()."admin/==table==/deleteAll"; ?>',
-     data:{
-       allIds : ids,
-       '<?php echo $this->security->get_csrf_token_name(); ?>':'<?php echo $this->security->get_csrf_hash(); ?>'
-     },
-     success:function(){
-       location.reload();
-       },
-     });
-   }
-   }
+  var deleteAllUrl = '<?php echo base_url()."admin/==table==/deleteAll"; ?>';
+  var csrfTokenName = '<?php echo $this->security->get_csrf_token_name(); ?>';
+  var csrfHash = '<?php echo $this->security->get_csrf_hash(); ?>';
 </script>
 <?php @@@this->load->view('footer'); ?>

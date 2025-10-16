@@ -20,46 +20,50 @@ class controller_name extends CI_Controller
 		@@@v_fields=@@@this->==table==->v_fields;
 		@@@per_page_arr = array('5', '10', '20', '50', '100');
 
-		if (isset(@@@_GET['searchValue']) && isset(@@@_GET['searchBy'])) {
-			@@@data['searchBy']=@@@_GET['searchBy'];
-			@@@data['searchValue']=@@@_GET['searchValue'];
-			if (!empty(@@@_GET['searchValue']) && @@@_GET['searchValue']!="" && !empty(@@@_GET['searchBy']) && @@@_GET['searchBy']!="" ) {
+		if (@@@this->input->get('searchValue') && @@@this->input->get('searchBy')) {
+			@@@data['searchBy'] = @@@this->input->get('searchBy');
+			@@@data['searchValue'] = @@@this->input->get('searchValue');
+			if (@@@data['searchValue'] && @@@data['searchBy']) {
 					@@@cond="true";
 			}
 		}
 
-		@@@data['sortBy']='';
-        @@@order_by = isset(@@@_GET['sortBy']) && in_array(@@@_GET['sortBy'], @@@v_fields)?@@@_GET['sortBy']:'';
-        @@@order = isset(@@@_GET['order']) && @@@_GET['order']=='asc'?'asc':'desc';
-        @@@searchBy = isset(@@@_GET['searchBy']) && in_array(@@@_GET['searchBy'], @@@v_fields)?@@@_GET['searchBy']:null;
-        @@@searchValue = isset(@@@_GET['searchValue'])?@@@_GET['searchValue']:'';
-        @@@searchValue = addslashes(@@@searchValue);
+		@@@data['sortBy'] = '';
+		@@@order_by = (in_array(@@@this->input->get('sortBy'), @@@v_fields)) ? @@@this->input->get('sortBy') : '';
+		@@@order = (@@@this->input->get('order') == 'asc') ? 'asc' : 'desc';
+		@@@searchBy = (in_array(@@@this->input->get('searchBy'), @@@v_fields)) ? @@@this->input->get('searchBy') : null;
+		@@@searchValue = @@@this->input->get('searchValue');
 
-		if(isset(@@@_GET['sortBy']) && @@@_GET['sortBy']!=''){
-			@@@data['sortBy']=@@@_GET['sortBy'];
-			if(isset(@@@_GET['order']) && @@@_GET['order']!=''){
-				@@@_GET['order']=@@@_GET['order']=='asc'?'desc':'asc';
+		if(@@@order_by !=''){
+			@@@data['sortBy'] = @@@order_by;
+			if(@@@order !=''){
+				@@@order = (@@@order == 'asc') ? 'desc' : 'asc';
 			} else{
-				@@@_GET['order']='desc';
+				@@@order = 'desc';
 			}
 		}
 
-		@@@get_q = @@@_GET;
+		@@@params = array(
+			'searchValue' => @@@searchValue,
+			'searchBy' => @@@searchBy,
+			'sortBy' => @@@order_by,
+			'order' => @@@order,
+		);
 		foreach (@@@v_fields as @@@key => @@@value) {
-			@@@get_q['sortBy'] = @@@value;
-			@@@query_result = http_build_query(@@@get_q);
+			@@@params['sortBy'] = @@@value;
+			@@@query_result = http_build_query(@@@params);
 			@@@data['fields_links'][@@@value] =current_url().'?'.@@@query_result;
 		}
 		@@@data['csvlink'] = base_url().'admin/==table==/export/csv';
 		@@@data['pdflink'] = base_url().'admin/==table==/export/pdf';
-		@@@data['per_page'] = isset(@@@_GET['per_page']) && in_array(@@@_GET['per_page'], @@@per_page_arr)?@@@_GET['per_page']:"5";
+		@@@data['per_page'] = (in_array(@@@this->input->get('per_page'), @@@per_page_arr)) ? @@@this->input->get('per_page') : "5";
 
 		// PAGINATION
 		@@@config = array();
-		@@@config['suffix']='?'.@@@_SERVER['QUERY_STRING'];
+		@@@config['suffix']='?'.http_build_query(array_diff_key(@@@params, array('per_page' => '')));
         @@@config["base_url"] = base_url() . "admin/==table==/index";
         @@@total_row = @@@this->==table==->getCount('==table==', @@@searchBy, @@@searchValue);
-        @@@config["first_url"] = base_url()."admin/==table==/index".'?'.@@@_SERVER['QUERY_STRING'];
+        @@@config["first_url"] = base_url()."admin/==table==/index".'?'.http_build_query(array_diff_key(@@@params, array('per_page' => '')));
         @@@config["total_rows"] = @@@total_row;
         @@@config["per_page"] = @@@per_page = @@@data['per_page'];
         @@@config["uri_segment"] = @@@this->uri->total_segments();
